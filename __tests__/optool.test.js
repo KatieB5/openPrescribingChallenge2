@@ -1,77 +1,97 @@
-const { getChemicalName } = require("../optool.js");
-/**
- * Define fake responses for HTTP requests
- *
- * @param url - the URL to be requested
- * @param response - the JSON to return as a response
- */
+const {
+  getHighestPrescribingICBs,
+  getChemicalName,
+  getSpendingData,
+  sortAndProcessSpendData
+} = require("../optool.js");
 
-let useMocks = false;
+// test("should get the chemical name", async () => {
+//   const chemicalName = await getChemicalName("0407010AD");
+//   expect(chemicalName).toBe("Paracetamol and ibuprofen");
+// });
 
-function mockFetch(url, response) {
-  if (useMocks === true) {
-    fetch = jest.fn((input) => {
-      return Promise.resolve({
-        ok: true,
-        json: () => (input === url ? response : {}),
+describe("getHighestPrescribingICBs", () => {
+  test("should not allow non-string data types as input", async () => {
+    await expect(getHighestPrescribingICBs(["0407010AD"])).rejects.toThrowError(
+      "Code is not valid: input must be of data type 'string'"
+    );
+  });
+
+  test("should not allow full BNF code", async () => {
+    await expect(
+      getHighestPrescribingICBs("0407010ADAAABAB")
+    ).rejects.toThrowError(
+      "Code is not valid: must be 9 character chemical code"
+    );
+  });
+
+  test("should check for a valid BNF code", async () => {
+    await expect(getHighestPrescribingICBs("0000000AA")).rejects.toThrowError(
+      "Code is not valid: not found"
+    );
+  });
+});
+
+describe("getChemicalName", () => {
+  test("should return an object with a 'name' key that holds the value of the chemical name", async () => {
+    const chemicalName = await getChemicalName(
+      "https://openprescribing.net/api/1.0/bnf_code?format=json&exact=true&q=0407010AD"
+    );
+    expect(chemicalName).toMatchObject({
+      type: expect.any(String),
+      id: expect.any(String),
+      name: expect.any(String),
+      section: expect.any(String),
+    });
+    expect(chemicalName.name).toBe("Paracetamol and ibuprofen");
+  });
+});
+
+describe("getSpendingData", () => {
+  test("should return an array of objects", async () => {
+    const spendingData = await getSpendingData(
+      "https://openprescribing.net/api/1.0/spending_by_org/?org_type=icb&code=0407010AD&format=json"
+    );
+
+    expect(Array.isArray(spendingData)).toBe(true);
+    expect(spendingData.length).not.toBe(0);
+    spendingData.forEach((spendingDataObj) => {
+      expect(spendingDataObj).toMatchObject({
+        items: expect.any(Number),
+        quantity: expect.any(Number),
+        actual_cost: expect.any(Number),
+        date: expect.any(String),
+        row_id: expect.any(String),
+        row_name: expect.any(String),
       });
     });
-  }
-}
-
-beforeEach(() => {
-  let useMocks = false;
-  jest.resetAllMocks();
+  });
 });
 
-test("should get the chemical name", async () => {
-  let useMocks = true;
-  mockFetch(
-    "https://openprescribing.net/api/1.0/bnf_code?format=json&exact=true&q=0407010AD",
-    [
-      {
-        type: "chemical",
-        id: "0407010AD",
-        name: "Paracetamol and ibuprofen",
-        section: "4.7: Analgesics",
-      },
-    ]
-  );
+describe("sortAndProcessSpendData", () => {
+  test('should return an array or strings', async () => {
+    const spendingData = await getSpendingData(
+      "https://openprescribing.net/api/1.0/spending_by_org/?org_type=icb&code=0407010AD&format=json"
+    );
 
-  const chemicalName = await getChemicalName("0407010AD");
-  expect(chemicalName).toEqual("Paracetamol and ibuprofen");
-});
+    const sortedData = sortAndProcessSpendData(spendingData);
 
-test("should not allow full BNF code", async () => {
-  await expect(getChemicalName("0407010ADAAABAB")).rejects.toThrowError(
-    "Code is not valid: must be 9 character chemical code"
-  );
-});
+    console.log(Array.isArray(sortedData));
 
-test("should check for a valid BNF code", async () => {
-  let useMocks = true;
-  mockFetch(
-    "https://openprescribing.net/api/1.0/bnf_code?format=json&exact=true&q=0000000AA",
-    []
-  );
+    expect(Array.isArray(sortedData)).toBe(true);
+    sortedData.forEach((datum) => {
+      expect(typeof datum).toBe("string");
+    })
+  });
 
-  await expect(getChemicalName("0000000AA")).rejects.toThrowError(
-    "Code is not valid: not found"
-  );
-});
+    
+  test('should return spending data for the ICB that prescribed the chemical most frequently on each date', async () => {
+    const spendingData = await getSpendingData(
+      "https://openprescribing.net/api/1.0/spending_by_org/?org_type=icb&code=0407010AD&format=json"
+    );
 
-// test.skip(
-//   "should check for a valid BNF code",
-//   { skip: true, todo: "not implemented" }, // remove this line to enable the test
-//   async () => {
-//     mockFetch(
-//       "https://openprescribing.net/api/1.0/bnf_code?format=json&exact=true&q=0000000AA",
-//       []
-//     );
+    const sortedData = sortAndProcessSpendData(spendingData)
 
-//     await assert.rejects(async () => await getChemicalName("0000000AA"), {
-//       name: "Error",
-//       message: "Code is not valid: not found",
-//     });
-//   }
-// );
+    expect(sortedData[0]).toBe("2019-04-01 NHS HUMBER AND NORTH YORKSHIRE INTEGRATED CARE BOARD 3");
+  });
+})
