@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "optool.js",
   "scripts": {
-    "test": "NODE_ENV=test node --test"
+    "test": "jest"
   },
   "type": "module",
   "engines": {

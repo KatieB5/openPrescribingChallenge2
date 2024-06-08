@@ -1,4 +1,4 @@
-# OpenPrescribing API coding challenge: Solution - take two!
+# OpenPrescribing API coding challenge: Take two!
 
 ## Introduction
 I already completed this challenge as part of a tech test, however after completing it I wanted to have another try as there were a few things that, on reflection, I would have liked to have done differently (and without time pressure). See the "Design decisions" section for an explanation of these choices.
