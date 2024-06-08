@@ -9,5 +9,8 @@
   "engines": {
     "npm": ">=10.0.0",
     "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

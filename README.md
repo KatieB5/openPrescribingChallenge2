@@ -1,4 +1,7 @@
-# OpenPrescribing API coding challenge: Solution
+# OpenPrescribing API coding challenge: Solution - take two!
+
+## Introduction
+I already completed this challenge as part of a tech test, however after completing it I wanted to have another try as there were a few things that, on reflection, I would have liked to have done differently (and without time pressure). See the "Design decisions" section for an explanation of these choices.
 
 ## Tool overview
 
@@ -9,19 +12,18 @@ This is a command line tool which takes the chemical code for a medicine and use
 1. Chemical code check: before any API calls are made, the structure of the input is validated
 2. Chemical name and spending data retrieval: calls are made to separate endpoints of the OpenPrescribingAPI to fetch the chemical name and the spending data.
 3. API response and data retrieval checks: validates API call responses and ensures a valid chemical code has been input by the user
-4. Spending data processing and sorting: the spending data are sorted by date (ascending) and then by number of items (descending) within each date, before being filtered to obtain the ICBs with the highest number of items for each month.
-5. The final data object containing the chemical name and spending data is returned and printed.
+4. TBC......
 
 ### Design decisions
 
-1. As node:test had already been implemented, and I haven't used it before, I decided to keep using this to test my coding solution. However if I could re-do this coding task I would use the Jest testing library as I'm familiar with it, it provides a wider range of features vs node:test, has a large supporting community and has comprehensive docs
-2. Originally I had two separate functions within the tool file, for separation of concerns (retrieval of chemical name and retrieval and processing of spending data). I later refactored this to have one function to reduce some redundancy in my code, although:
-   - This meant my previous tests became redudant
-   - Perhaps a better way to refactor (to maintian some separation of concerns) would have been to have the data retrieval for both API calls in the getChemicalCode function, then have a separate function (called by getChemicalCode) which handles the spending data sorting and processing
+1. As node:test had already been implemented for the original challenge, and I hadn't used it before, I kept using this to test my original coding solution (my thinking here was that I'd potentially save some time re-writing mocks and tests already provided, and also get to try something new!). However on reflection, I would have preferred to have used the Jest testing library as I'm familiar with it, it provides a wider range of features vs node:test, has a large supporting community and has comprehensive docs. Jest also provides a more comprehensive code coverage reporting option vs node:test's --experimental-test-coverage, command-line flag. So this second attempt at the challenge utilizes the Jest testing library.
+
+2. Additionally, given the structure of the coding challenge and my earlier design decisions, when Icame to refactoring my solution, a couple of things happened: all my previous tests were redundant and I ended up with one big function doing everything. On reflection, I thought perhaps a better (or just different?) way to refactor, and maintian some separation of concerns, would have been to have the data retrieval for both API calls in the main getChemicalCode function, then have a separate function (called by getChemicalCode) which handles the sorting and processing of the spending data.
 
 ## Get started
 
-1. No dependancies are required for this project, so you can dive straight in with running tests or using the tool
+1. Install the dependancies (i.e. Jest :D)
+   `npm i`
 2. Run the tests:
    `npm run test`
 3. Use the tool:
