@@ -11,15 +11,16 @@ This is a command line tool which takes the chemical code for a medicine and use
 ### Code structure
 
 1. Chemical code check: before any API calls are made, the structure of the input is validated
-2. Chemical name and spending data retrieval: calls are made to separate endpoints of the OpenPrescribingAPI to fetch the chemical name and the spending data.
+2. Chemical name and spending data retrieval: calls are made to separate endpoints of the OpenPrescribingAPI to fetch the chemical name and the spending data; this is done via two separate functions (getChemicalName() and getSpendingData()).
 3. API response and data retrieval checks: validates API call responses and ensures a valid chemical code has been input by the user
-4. TBC......
+4. Sorting and processing of the spending data: the spending data are sorted by date (ascending) and then by number of items (descending) within each date, before being filtered to obtain the ICBs with the highest number of items for each month.
+5. The final data object containing the chemical name and spending data is returned and printed.
 
 ### Design decisions
 
-1. As node:test had already been implemented for the original challenge, and I hadn't used it before, I kept using this to test my original coding solution (my thinking here was that I'd potentially save some time re-writing mocks and tests already provided, and also get to try something new!). However on reflection, I would have preferred to have used the Jest testing library as I'm familiar with it, it provides a wider range of features vs node:test, has a large supporting community and has comprehensive docs. Jest also provides a more comprehensive code coverage reporting option vs node:test's --experimental-test-coverage, command-line flag. So this second attempt at the challenge utilizes the Jest testing library.
+1. As node:test had already been implemented for the original challenge, and I hadn't used it before, I kept using this to test my original coding solution (my thinking here was that I'd potentially save some time re-writing mocks and tests already provided, and also get to try something new!). However on reflection, I would have preferred to have used the Jest testing library as I've used it before, it provides a wider range of features vs node:test, has a large supporting community and has comprehensive docs. Jest also provides a more comprehensive code coverage reporting option vs node:test's --experimental-test-coverage, command-line flag. So this second attempt at the challenge utilizes the Jest testing library.
 
-2. Additionally, given the structure of the coding challenge and my earlier design decisions, when I came to refactoring my solution, a couple of things happened: all my previous tests were redundant and I ended up with one big function doing everything. On reflection, I thought perhaps a better (or just different?) way to refactor, and maintian separation of concerns, would have been to have functions for the data retrieval (API calls), and the sorting and processing of the spending data, separated out and called my the main function. I thought this may also improve readability of the code, and would allow me to more thoroughly test outputs and logic at different stages of the tool.
+2. Additionally, given the structure of the coding challenge and my earlier design decisions, when I came to refactoring my solution, a couple of things happened: all my previous tests were redundant AND I ended up with one big function doing everything. On reflection, I thought perhaps a better (or just different?) way to refactor, and maintian separation of concerns, would have been to have separate functions for the data retrieval (calls to different API endpoints), and the sorting and processing of the spending data, called my the main function. I thought this may also improve readability of the code, and would allow me to more thoroughly test outputs and logic at different stages of the tool.
 
 ## Get started
 

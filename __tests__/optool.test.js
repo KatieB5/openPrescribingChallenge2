@@ -10,6 +10,9 @@ describe("getHighestPrescribingICBs", () => {
     await expect(getHighestPrescribingICBs(["0407010AD"])).rejects.toThrowError(
       "Code is not valid: input must be of data type 'string'"
     );
+    await expect(getHighestPrescribingICBs(1407010)).rejects.toThrowError(
+      "Code is not valid: input must be of data type 'string'"
+    );
   });
 
   test("should not allow full BNF code", async () => {
@@ -24,6 +27,12 @@ describe("getHighestPrescribingICBs", () => {
     await expect(getHighestPrescribingICBs("0000000AA")).rejects.toThrowError(
       "Code is not valid: not found"
     );
+  });
+
+  test('should return an object with the name of the chemical and the sorted spend data stored as properties', async () => {
+    const data = await getHighestPrescribingICBs("0407010AD")
+
+    expect(data).toMatchObject({ name: "Paracetamol and ibuprofen", spendingData: expect.arrayContaining([expect.any(String)]) })
   });
 });
 
