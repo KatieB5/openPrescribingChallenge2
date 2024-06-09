@@ -1,4 +1,4 @@
-const { argv, env } = require("node:process");
+const { argv, env } = require('process');
 
 async function main(chemicalCode) {
   const name = await getHighestPrescribingICBs(chemicalCode);

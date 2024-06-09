@@ -5,11 +5,9 @@
   "scripts": {
     "test": "jest"
   },
-  "type": "module",
-  "engines": {
-    "npm": ">=10.0.0",
-    "node": ">=20.0.0"
-  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
     "jest": "^29.7.0"
   },
