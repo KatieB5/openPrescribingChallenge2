@@ -71,15 +71,13 @@ describe("sortAndProcessSpendData", () => {
 
     const sortedData = sortAndProcessSpendData(spendingData);
 
-    console.log(Array.isArray(sortedData));
-
     expect(Array.isArray(sortedData)).toBe(true);
     sortedData.forEach((datum) => {
       expect(typeof datum).toBe("string");
     });
   });
 
-  xtest("should return spending data for the ICB that prescribed the chemical most frequently on each date", async () => {
+  test("should return spending data for the ICB that prescribed the chemical most frequently on each date", async () => {
     const spendingData = await getSpendingData(
       "https://openprescribing.net/api/1.0/spending_by_org/?org_type=icb&code=0407010AD&format=json"
     );

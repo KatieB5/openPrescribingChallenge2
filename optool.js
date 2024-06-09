@@ -1,8 +1,11 @@
 const { argv, env } = require('process');
 
 async function main(chemicalCode) {
-  const name = await getHighestPrescribingICBs(chemicalCode);
-  console.log(name);
+  const data = await getHighestPrescribingICBs(chemicalCode);
+  console.log(data.name);
+  data.spendingData.forEach((datum) => {
+    console.log(datum);
+  });
 }
 
 async function getHighestPrescribingICBs(chemicalCode) {
@@ -57,7 +60,7 @@ async function getSpendingData(url) {
   return results;
 }
 
-async function sortAndProcessSpendData(spendingDataResult) {
+function sortAndProcessSpendData(spendingDataResult) {
   spendingDataResult.sort((a, b) => {
     if (a.date < b.date) {
       return -1;
