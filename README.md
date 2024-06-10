@@ -18,13 +18,13 @@ This is a command line tool which takes the chemical code for a medicine and use
 
 ### Design decisions
 
-1. As node:test had already been implemented for the original challenge, and I hadn't used it before, I kept using this to test my original coding solution (my thinking here was that I'd potentially save some time re-writing mocks and tests already provided, and also get to try something new!). However on reflection, I would have preferred to have used the Jest testing library as I've used it before, it provides a wider range of features vs node:test, has a large supporting community and has comprehensive docs. Jest also provides a more comprehensive code coverage reporting option vs node:test's --experimental-test-coverage, command-line flag. So this second attempt at the challenge utilizes the Jest testing library.
+1. As node:test had already been implemented for the original challenge, and I hadn't used it before, I kept using this to test my original coding solution (my thinking here was that I'd potentially save some time re-writing mocks and tests already provided, and also get to try something new!). However on reflection, I would have preferred to have used the Jest testing library - I've used it before, it provides a wider range of features vs node:test, has a large supporting community and has comprehensive docs. Thus, this second attempt at the challenge utilizes the Jest testing library.
 
-2. Additionally, given the structure of the coding challenge and my earlier design decisions, when I came to refactoring my solution, a couple of things happened: all my previous tests were redundant AND I ended up with one big function doing everything. On reflection, I thought perhaps a better (or just different?) way to refactor, and maintian separation of concerns, would have been to have separate functions for the data retrieval (calls to different API endpoints), and the sorting and processing of the spending data, called my the main function. I thought this may also improve readability of the code, and would allow me to more thoroughly test outputs and logic at different stages of the tool.
+2. Additionally, given the structure of the coding challenge and my earlier design decisions, when I came to refactoring my solution, a couple of things happened: all my previous tests were redundant AND I ended up with one big function doing everything. On reflection, I thought perhaps a better (or just different?) way to refactor, and maintain separation of concerns, would have been to have separate functions for the data retrieval (calls to different API endpoints), and the sorting and processing of the spending data, called by the main function. I thought this may also improve readability of the code, and would allow me to more thoroughly test outputs and logic at different stages of the tool.
 
 ## Get started
 
-1. Install the dependancies (i.e. Jest :D)
+1. Install the dependancies 
    `npm i`
 2. Run the tests:
    `npm run test`
