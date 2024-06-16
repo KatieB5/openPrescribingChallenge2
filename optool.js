@@ -75,7 +75,7 @@ function sortAndProcessSpendData(spendingDataResult) {
   const highestItemsbyDate = spendingDataResult.filter((resultObj) => {
     if (!uniqueDates.has(resultObj.date)) {
       uniqueDates.add(resultObj.date);
-      return spendingDataResult;
+      return true;
     }
   });
 
