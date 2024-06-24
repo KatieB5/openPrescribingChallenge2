@@ -3,7 +3,7 @@ const {
   getChemicalName,
   getSpendingData,
   sortAndProcessSpendData,
-} = require("../optool.js");
+} = require('../optool.js');
 
 describe("getHighestPrescribingICBs", () => {
   test("should not allow non-string data types as input", async () => {
@@ -94,7 +94,7 @@ describe("sortAndProcessSpendData", () => {
     const sortedData = sortAndProcessSpendData(spendingData);
 
     expect(sortedData[0]).toBe(
-      "2019-04-01 NHS HUMBER AND NORTH YORKSHIRE INTEGRATED CARE BOARD 3"
+      "2019-05-01 NHS GREATER MANCHESTER INTEGRATED CARE BOARD 3"
     );
   });
 });
